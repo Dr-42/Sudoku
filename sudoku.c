@@ -13,12 +13,12 @@
 #include <stdlib.h>
 
 //Loads the board from the file
-void load_sudoku(int sudoku[9][9], char *filename){
+int load_sudoku(int sudoku[9][9], char *filename){
 	FILE *fp;
 	fp = fopen(filename, "r");
 	if(fp == NULL){
 		printf("Error opening file\n");
-		return;
+		return 1;
 	}
 	int i, j;
 	for(i = 0; i < 9; i++){
@@ -27,7 +27,7 @@ void load_sudoku(int sudoku[9][9], char *filename){
 		}
 	}
 	fclose(fp);
-	return;
+	return 0;
 }
 
 //Checks if the guess is valid
@@ -104,19 +104,43 @@ int main(int argc, char** argv){
 	//get filename from argv
 	char *filename = argv[1];
 	int sudoku[9][9];
-	load_sudoku(sudoku, filename);
 	
+	if(!load_sudoku(sudoku, filename)){
+		printf("Sudoku loaded successfully\n");
+	}
+	else{
+		printf("Error loading sudoku\n");
+		return 1;
+	}
+	
+	for(int i = 0; i < 9; i++){
+		for(int j = 0; j < 9; j++){
+			if(sudoku[i][j] < 0 || sudoku[i][j] > 9){
+				printf("Error: Invalid input\n");
+				return 1;
+			}
+		}
+	}
+
 	printf("Given sudoku:\n");
 	print_sudoku(sudoku);
 	
 	float start = clock();
 	
 	solve(sudoku, 0, 0);
+	float end = clock();
+	for(int i = 0; i < 9; i++){
+		for(int j = 0; j < 9; j++){
+			if(sudoku[i][j] < 1 || sudoku[i][j] > 9){
+				printf("Error: Unsolvable input\n");
+				return 1;
+			}
+		}
+	}
 	printf("\nSolved sudoku:\n");
 	print_sudoku(sudoku);
 	printf("\n");
 	
-	float end = clock();
 	printf("Time taken: %f\n", (end - start) / CLOCKS_PER_SEC);
 	return 0;
 }
