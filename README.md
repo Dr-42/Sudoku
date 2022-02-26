@@ -1,8 +1,8 @@
 This is a simple Sudoku solving engine written in C.
 
-Usage <bin> <filename>
+Usage:  {sudoku} {filename}
 
-'''
+```
 Example:
 
 ~$sud tough.sud
@@ -37,5 +37,5 @@ Solved sudoku:
 
 Time taken: 0.018000
 
-'''
+```
 
