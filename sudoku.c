@@ -15,6 +15,24 @@
 #include <time.h>
 void print_sudoku(int sudoku[9][9]);
 
+void load_sudoku(int sudoku[9][9], char *filename){
+	FILE *fp;
+	fp = fopen(filename, "r");
+	if(fp == NULL){
+		printf("Error opening file\n");
+		return;
+	}
+	int i, j;
+	for(i = 0; i < 9; i++){
+		for(j = 0; j < 9; j++){
+			fscanf(fp, "%d", &sudoku[i][j]);
+		}
+	}
+
+	return;
+}
+
+
 int isValid(int sudoku[9][9], int row, int col, int num)
 {
 	int i, j;
@@ -70,7 +88,7 @@ void print_sudoku(int sudoku[9][9]){
 	}
 }
 int main(){
-	int sudoku[9][9] = {
+	/*int sudoku[9][9] = {
 		{2,0,0,3,0,0,0,0,0},
 		{8,0,4,0,6,2,0,0,3},
 		{0,1,3,8,0,0,2,0,0},
@@ -80,15 +98,14 @@ int main(){
 		{0,2,0,0,0,9,1,4,0},
 		{6,0,1,2,5,0,8,0,9},
 		{0,0,0,0,0,1,0,0,2}
-	};
+	};*/
+	int sudoku[9][9];
+	load_sudoku(sudoku, "./tes.sud");
+	printf("Given sudoku:\n");
 	print_sudoku(sudoku);
 	float start = clock();
 	solve(sudoku, 0, 0);
-	;
-	printf("\n");
-	for(int i = 0; i < 1000; i++){
-		solve(sudoku, 0, 0);
-	}
+	printf("\nSolved sudoku:\n");
 	print_sudoku(sudoku);
 	printf("\n");
 	float end = clock();
